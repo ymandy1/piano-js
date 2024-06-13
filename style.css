@@ -1,0 +1,74 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+#controls {
+    margin-bottom: 20px;
+}
+
+#playRandom {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+#playRandom:hover {
+    background-color: #0056b3;
+}
+
+#piano {
+    display: flex;
+    align-items: flex-end;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.key {
+    border: 1px solid #000;
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em;
+    transition: all 0.1s ease;
+}
+
+.white {
+    width: 60px;
+    height: 200px;
+    background: linear-gradient(to bottom, #fff, #e0e0e0);
+    margin: 0 2px;
+    position: relative;
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
+}
+
+.black {
+    width: 40px;
+    height: 120px;
+    background: linear-gradient(to bottom, #333, #000);
+    margin: 0 -20px;
+    z-index: 1;
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
+}
+
+.key:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+}
+
+.key.playing {
+    background-color: #ffc107;
+    box-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
+}
