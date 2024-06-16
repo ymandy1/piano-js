@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body>
+    <canvas id="piano" width="800" height="200"></canvas>
+    <canvas id="fotoGatinho" width="100" height="100"></canvas>
+    <link href="./free.css" rel="stylesheet">
+    <script>
+            var gameOver = false;
+            var gatinho1 = new Image()
+            gatinho1.src = 'gatinho1.jpeg'
+
+            var gatinho2 = new Image()
+            gatinho2.src = 'gatinho2.jpeg'
+
+            var gatinho3 = new Image()
+            gatinho3.src = 'gatinho3.jpeg'
+
+            var gatinho4 = new Image()
+            gatinho4.src = 'gatinho4.jpeg'
+
+            var gatinho5 = new Image()
+            gatinho5.src = 'gatinho5.jpeg'
+
+            var gatinho6 = new Image()
+            gatinho6.src = 'gatinho6.jpeg'
+
+            var gatinho7 = new Image()
+            gatinho7.src = 'gatinho7.jpeg'
+
+            var gatinho8 = new Image()
+            gatinho8.src = 'gatinho8.jpeg'
+
+            var keys = [
+                { note: 'C', x: 0, width: 50, color: 'white', audio: new Audio('C88.mp3'), imagem: gatinho1 },
+                { note: 'Csharp', x: 35, width: 30, color: 'black', audio: new Audio('Csharp88.mp3') },
+                { note: 'D', x: 50, width: 50, color: 'white' , audio: new Audio('D88.mp3'), imagem: gatinho2},
+                { note: 'Dsharp', x: 85, width: 30, color: 'black' , audio: new Audio('Dsharp88.mp3')},
+                { note: 'E', x: 100, width: 50, color: 'white', audio: new Audio('E88.mp3') , imagem: gatinho3},
+                { note: 'F', x: 150, width: 50, color: 'white' , audio: new Audio('F88.mp3'), imagem: gatinho4},
+                { note: 'Fsharp', x: 185, width: 30, color: 'black', audio: new Audio('Fsharp88.mp3') },
+                { note: 'G', x: 200, width: 50, color: 'white', audio: new Audio('G88.mp3') , imagem: gatinho5},
+                { note: 'Gsharp', x: 235, width: 30, color: 'black', audio: new Audio('Gsharp88.mp3') },
+                { note: 'A', x: 250, width: 50, color: 'white', audio: new Audio('A88.mp3') , imagem: gatinho6},
+                { note: 'Asharp', x: 285, width: 30, color: 'black' , audio: new Audio('Asharp88.mp3')},
+                { note: 'B', x: 300, width: 50, color: 'white' , audio: new Audio('B88.mp3'), imagem: gatinho7},
+                { note: 'C', x: 350 , width: 50, color: 'white', audio: new Audio('C.mp3'), imagem: gatinho8 },
+                
+                { note: 'Csharp', x: 385, width: 30, color: 'black', audio: new Audio('Csharp.mp3'), imagem: gatinho1 },
+                { note: 'D', x: 400, width: 50, color: 'white' , audio: new Audio('D.mp3'), imagem: gatinho2},
+                { note: 'Dsharp', x: 435, width: 30, color: 'black' , audio: new Audio('Dsharp.mp3')},
+                { note: 'E', x: 450, width: 50, color: 'white', audio: new Audio('E.mp3'), imagem: gatinho3},
+                { note: 'F', x: 500, width: 50, color: 'white' , audio: new Audio('F.mp3'), imagem: gatinho4},
+                { note: 'Fsharp', x: 535, width: 30, color: 'black', audio: new Audio('Fsharp.mp3') },
+                { note: 'G', x: 550, width: 50, color: 'white', audio: new Audio('G.mp3'), imagem: gatinho5 },
+                { note: 'Gsharp', x: 585, width: 30, color: 'black', audio: new Audio('Gsharp.mp3') },
+                { note: 'A', x: 600, width: 50, color: 'white', audio: new Audio('A.mp3'), imagem: gatinho6 },
+                { note: 'Asharp', x: 635, width: 30, color: 'black' , audio: new Audio('Asharp.mp3')},
+                { note: 'B', x: 650, width: 50, color: 'white' , audio: new Audio('B.mp3'), imagem: gatinho7},
+                { note: 'C', x: 700 , width: 50, color: 'white', audio: new Audio('C8.mp3') , imagem: gatinho2},
+            ];
+
+        window.onload = function(){ 
+
+            var images = [gatinho1, gatinho2, gatinho3, gatinho4, gatinho5, gatinho6, gatinho7, gatinho8];
+        
+
+            for (var i = 0; i < keys.length; i++) {
+                var randomIndex = Math.floor(Math.random() * images.length);
+
+                keys[i].imagem = images[randomIndex];
+
+               
+                if (images[randomIndex] === 'gatinho8') {
+                    images.splice(randomIndex, 1);
+                }
+            }
+
+    
+        }
+
+        var tentativas = 0
+        var canvas = document.getElementById('piano');
+        var context = canvas.getContext('2d');
+
+        var whiteKeys = keys.filter(function(key) {
+            return key.color === 'white';
+        });
+
+        var blackKeys = keys.filter(function(key) {
+            return key.color === 'black';
+        });
+
+        whiteKeys.forEach(function(key) {
+            context.fillStyle = key.color;
+            context.fillRect(key.x, 0, key.width, 200);
+            context.strokeRect(key.x, 0, key.width, 200);
+        });
+
+        blackKeys.forEach(function(key) {
+            context.fillStyle = key.color;
+            context.fillRect(key.x, 0, key.width, 120);
+            context.strokeRect(key.x, 0, key.width, 120);
+        });
+
+        canvas.addEventListener('mousedown', function(event) {
+            var rect = canvas.getBoundingClientRect();
+            var x = event.clientX - rect.left;
+            var y = event.clientY - rect.top
+
+            var pressedKey = blackKeys.find(function(key) {
+                return y > 0 && y < 120 && x > key.x && x < key.x + key.width;
+            });
+
+            if (!pressedKey) {
+                pressedKey = whiteKeys.find(function(key) {
+                    return y > 0 && y < 200 && x > key.x && x < key.x + key.width;
+                });
+            }
+
+            if (pressedKey) {
+
+
+                if (tentativas > 3 ) {
+                    swal({
+                            title: "Perdeu!",
+                            text: "Você excedeu o número máximo de tentativas, Clique em OK para recarregar a página e jogar novamente.",
+                            icon: "error",
+                            button: "OK",
+                        })
+                        .then((willReload) => {
+                            if (willReload !== null) {
+                                location.reload();
+                            }
+                        });
+                }
+
+                tentativas += 1
+
+
+                if (pressedKey.imagem === gatinho8) {
+
+                    context.drawImage(pressedKey.imagem, pressedKey.x, 0, 50, 50);
+                    setTimeout(() => {
+                        swal({
+                            title: "Ganhou!",
+                            text: "Parabéns, você encontrou o gatinho especial! Clique em OK para recarregar a página e jogar novamente.",
+                            icon: "success",
+                            button: "OK",
+                        })
+                        .then((willReload) => {
+                            if (willReload !== null) {
+                                location.reload();
+                            }
+                        });
+                    }, 300);
+                }
+                
+                
+                context.drawImage(pressedKey.imagem, pressedKey.x, 0, 35, 35);
+
+
+                pressedKey.audio.currentTime = 0; 
+                pressedKey.audio.play();
+
+            }
+        
+            
+        });
+
+ 
+    </script>
+</body>
+</html>
+

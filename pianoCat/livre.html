@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body>
+    <canvas id="piano" width="800" height="200"></canvas>
+    <canvas id="fotoGatinho" width="100" height="100"></canvas>
+    <link href="./free.css" rel="stylesheet">
+    <script>
+            var keys = [
+                { note: 'C', x: 0, width: 50, color: 'white', audio: new Audio('C88.mp3')},
+                { note: 'Csharp', x: 35, width: 30, color: 'black', audio: new Audio('Csharp88.mp3') },
+                { note: 'D', x: 50, width: 50, color: 'white' , audio: new Audio('D88.mp3')},
+                { note: 'Dsharp', x: 85, width: 30, color: 'black' , audio: new Audio('Dsharp88.mp3')},
+                { note: 'E', x: 100, width: 50, color: 'white', audio: new Audio('E88.mp3') },
+                { note: 'F', x: 150, width: 50, color: 'white' , audio: new Audio('F88.mp3')},
+                { note: 'Fsharp', x: 185, width: 30, color: 'black', audio: new Audio('Fsharp88.mp3') },
+                { note: 'G', x: 200, width: 50, color: 'white', audio: new Audio('G88.mp3') },
+                { note: 'Gsharp', x: 235, width: 30, color: 'black', audio: new Audio('Gsharp88.mp3') },
+                { note: 'A', x: 250, width: 50, color: 'white', audio: new Audio('A88.mp3')},
+                { note: 'Asharp', x: 285, width: 30, color: 'black' , audio: new Audio('Asharp88.mp3')},
+                { note: 'B', x: 300, width: 50, color: 'white' , audio: new Audio('B88.mp3')},
+                { note: 'C', x: 350 , width: 50, color: 'white', audio: new Audio('C.mp3') },
+                
+                { note: 'Csharp', x: 385, width: 30, color: 'black', audio: new Audio('Csharp.mp3')},
+                { note: 'D', x: 400, width: 50, color: 'white' , audio: new Audio('D.mp3')},
+                { note: 'Dsharp', x: 435, width: 30, color: 'black' , audio: new Audio('Dsharp.mp3')},
+                { note: 'E', x: 450, width: 50, color: 'white', audio: new Audio('E.mp3')},
+                { note: 'F', x: 500, width: 50, color: 'white' , audio: new Audio('F.mp3')},
+                { note: 'Fsharp', x: 535, width: 30, color: 'black', audio: new Audio('Fsharp.mp3') },
+                { note: 'G', x: 550, width: 50, color: 'white', audio: new Audio('G.mp3')},
+                { note: 'Gsharp', x: 585, width: 30, color: 'black', audio: new Audio('Gsharp.mp3') },
+                { note: 'A', x: 600, width: 50, color: 'white', audio: new Audio('A.mp3')},
+                { note: 'Asharp', x: 635, width: 30, color: 'black' , audio: new Audio('Asharp.mp3')},
+                { note: 'B', x: 650, width: 50, color: 'white' , audio: new Audio('B.mp3')},
+                { note: 'C', x: 700 , width: 50, color: 'white', audio: new Audio('C8.mp3')},
+            ];
+
+
+
+        var canvas = document.getElementById('piano');
+        var context = canvas.getContext('2d');
+
+        var whiteKeys = keys.filter(function(key) {
+            return key.color === 'white';
+        });
+
+        var blackKeys = keys.filter(function(key) {
+            return key.color === 'black';
+        });
+
+        whiteKeys.forEach(function(key) {
+            context.fillStyle = key.color;
+            context.fillRect(key.x, 0, key.width, 200);
+            context.strokeRect(key.x, 0, key.width, 200);
+        });
+
+        blackKeys.forEach(function(key) {
+            context.fillStyle = key.color;
+            context.fillRect(key.x, 0, key.width, 120);
+            context.strokeRect(key.x, 0, key.width, 120);
+        });
+
+        canvas.addEventListener('mousedown', function(event) {
+            var rect = canvas.getBoundingClientRect();
+            var x = event.clientX - rect.left;
+            var y = event.clientY - rect.top
+
+            var pressedKey = blackKeys.find(function(key) {
+                return y > 0 && y < 120 && x > key.x && x < key.x + key.width;
+            });
+
+            if (!pressedKey) {
+                pressedKey = whiteKeys.find(function(key) {
+                    return y > 0 && y < 200 && x > key.x && x < key.x + key.width;
+                });
+            }
+
+            if (pressedKey) {
+                
+                pressedKey.audio.currentTime = 0;
+                pressedKey.audio.play();
+
+            }
+        
+            
+        });
+
+        
+        
+        
+
+        
+
+    </script>
+</body>
+</html>
+
